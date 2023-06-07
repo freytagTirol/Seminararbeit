@@ -103,3 +103,17 @@ class Excel:
 
         print("Tabelle: " + str(chat_gpt_estimations))
         print("Tabelle erfolgreich gespeichert: " + full_table_path)
+
+    @staticmethod
+    def get_data(xlsx_path, col_name):
+        wb = openpyxl.load_workbook(xlsx_path)
+        ws = wb.active
+
+        # get all rows in col_name
+        for col in ws.iter_cols(min_row=1, max_row=1):
+            if col[0].value == col_name:
+                rows = []
+                for row in ws.iter_rows(min_row=2, min_col=col[0].column, max_col=col[0].column):
+                    for cell in row:
+                        rows.append(cell.value)
+                return rows
