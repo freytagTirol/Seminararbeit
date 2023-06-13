@@ -8,28 +8,34 @@ from tqdm import tqdm
 from excel import Excel
 from ai import Ai
 from keyword_analysis import KeywordAnalysis
-from globals import PATH, PROMPT, TOKEN_LIMIT, CONTENT_RESPONSE_TOKENS, MESSAGE_PRIMER_TOKENS
+from globals import PROMPT, TOKEN_LIMIT, CONTENT_RESPONSE_TOKENS, MESSAGE_PRIMER_TOKENS
 
 
-def main(ai=True, cut=True, test=False):
+def main(src, excel_path, ai=True, cut=True, api_key=None):
     # results table
     chat_gpt_estimations = []
 
     # initialize OpenAI
-    open_ai = Ai()
+    open_ai = Ai(api_key)
 
-    src = PATH + "src"
-    res = PATH + "res"
+    print("DEBUG: We are in main()")
+
+    res = os.path.join(src, "res")
+    if not os.path.exists(os.path.join(res)):
+        os.mkdir(res)
+
     table_path = res
 
     # initialize Excel input table
     print("Loading source excel table (this may take a while)...", end="")
-    excel = Excel(table_path, chat_gpt_estimations)
+    excel = Excel(table_path, chat_gpt_estimations, excel_path)
     print(" Done")
 
-    for file in tqdm(os.listdir(src)):
+    files = (file for file in os.listdir(src)
+             if os.path.isfile(os.path.join(src, file)) and os.path.splitext(os.path.join(src, file))[1] == ".txt")
+    for file in tqdm(files):
         # print("Progress: " + "{:%}".format(len(chat_gpt_estimations) / (len(chat_gpt_estimations) + len(lstdir))))
-        full_path = src + "/" + file
+        full_path = os.path.join(src, file)
         with open(full_path) as f:
             mda_id = file.strip(".txt")
             mda_text = "\n".join(f.readlines())
@@ -134,14 +140,14 @@ def main(ai=True, cut=True, test=False):
 
             chat_gpt_estimations.append(est)
 
-        os.rename(full_path, res + "/" + file)
+        os.rename(full_path, os.path.join(res, file))
 
-    if test is True:
-        # move all files from res to src
-        tmp = PATH + "/tmp"
-        os.rename(src, tmp)
-        os.rename(res, src)
-        os.rename(tmp, res)
+    # if test is True:
+    #     # move all files from res to src
+    #     tmp = PATH + "/tmp"
+    #     os.rename(src, tmp)
+    #     os.rename(res, src)
+    #     os.rename(tmp, res)
 
     # export data to excel
     print("Exporting final excel table (this may take a while)...", end="")
@@ -233,4 +239,7 @@ def split_long_texts(mda_id, mda_tokens_len, split_token_limit, encoding, mda_to
 
 if __name__ == '__main__':
     # check_too_big()
-    main(ai=True, cut=True)
+    main(src="C:/Users/frotz/Desktop/Freiburg VWL/Skripte/Semester 4/Seminar/Files/MDA_test/",
+         excel_path="C:/Users/frotz/Desktop/Freiburg VWL/Skripte/Semester 4/Seminar/Files/MDA_test/df_liti.xlsx",
+         ai=True,
+         cut=True)

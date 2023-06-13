@@ -1,10 +1,12 @@
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
-
-API_BASE = os.getenv("API_BASE")
-API_KEY = os.getenv("API_KEY")
+if load_dotenv():
+    API_BASE = os.getenv("API_BASE")
+    API_KEY = os.getenv("API_KEY")
+else:
+    API_BASE = "https://api.openai.com/v1/chat/"
+    API_KEY = None
 
 PROMPT = "\n\
         \n\
@@ -14,7 +16,7 @@ PROMPT = "\n\
         probability should be a number between 1 and 5 with 1 indicating low likelihood of litigation and 5 \
         indicating the highest likelihood of litigation."
 
-PATH = "C:/Users/frotz/Desktop/Freiburg VWL/Skripte/Semester 4/Seminar/Files/MDA_test/"
+# path = "C:/Users/frotz/Desktop/Freiburg VWL/Skripte/Semester 4/Seminar/Files/MDA_test/"
 
 CONNECTION_LOSS_TIMEOUT = 5
 

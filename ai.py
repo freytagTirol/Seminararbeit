@@ -6,8 +6,11 @@ from globals import CONTENT_RESPONSE_TOKENS, API_KEY, API_BASE, CONNECTION_LOSS_
 
 class Ai:
 
-    def __init__(self):
-        openai.api_key = API_KEY
+    def __init__(self, api_key):
+        if api_key is None:
+            openai.api_key = API_KEY
+        else:
+            openai.api_key = api_key
         openai.api_base = API_BASE
         print("OpenAI initialized")
         self.initialized = True

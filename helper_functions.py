@@ -1,12 +1,12 @@
 import os
 import tiktoken
 
-from globals import TOKEN_LIMIT, PROMPT, CONTENT_RESPONSE_TOKENS, PATH
+from globals import TOKEN_LIMIT, PROMPT, CONTENT_RESPONSE_TOKENS, path
 
 
 def check_too_big():
     too_long_texts = 0
-    src = PATH + "src"
+    src = path + "src"
     for file in os.listdir(src):
         full_path = src + "/" + file
         with open(full_path) as f:
@@ -26,8 +26,8 @@ def check_too_big():
 
 
 def find_missing_files():
-    src = PATH + "src"
-    freytag_path = PATH + "hans"
+    src = path + "src"
+    freytag_path = path + "hans"
     missing_files_txt = "fehlende_mda.txt"
     with open(missing_files_txt) as missing_files:
         for missing_file in missing_files.readlines():

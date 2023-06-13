@@ -3,15 +3,12 @@ import openpyxl
 import csv
 import logging
 
-from globals import PATH
-
 
 class Excel:
-    def __init__(self, table_path, table):
+    def __init__(self, table_path, table, excel_path):
         # Open excel table
         # xlsx_file = PATH + "df_litigation_MDA.xlsx"
-        xlsx_file = PATH + "Regression_Variables.xlsx"
-        self.wb_obj = openpyxl.load_workbook(xlsx_file)
+        self.wb_obj = openpyxl.load_workbook(excel_path)
         self.sheet = self.wb_obj.active
         self.table_path = table_path
         self.table = table
