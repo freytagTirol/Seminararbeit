@@ -161,7 +161,7 @@ def split_long_texts(mda_id, mda_tokens_len, split_token_limit, encoding, mda_to
     print(f'WARNING: {mda_id}.txt is too long ({mda_tokens_len} > {split_token_limit})\n'
           f'Splitting the text into multiple parts...')
     prompt = f'Describe the content of the following text - Do not leave out any information, \
-                        especially provide any numbers that are present int the text in your reply:\n\n'
+                        especially provide any numbers that are present in the text in your reply:\n\n'
     prompt_tokens = len(encoding.encode(prompt))
     final_prompt_tokens = len(encoding.encode(PROMPT))
 
